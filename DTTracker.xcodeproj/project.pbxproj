@@ -6,11 +6,29 @@
 	objectVersion = 46;
 	objects = {
 
+/* Begin PBXAggregateTarget section */
+		F747C2B31ECC78090091B946 /* DTTrackerCombiner */ = {
+			isa = PBXAggregateTarget;
+			buildConfigurationList = F747C2B41ECC78090091B946 /* Build configuration list for PBXAggregateTarget "DTTrackerCombiner" */;
+			buildPhases = (
+				F747C2B71ECC78350091B946 /* ShellScript */,
+			);
+			dependencies = (
+			);
+			name = DTTrackerCombiner;
+			productName = DTTrackerCombiner;
+		};
+/* End PBXAggregateTarget section */
+
 /* Begin PBXBuildFile section */
+		F747C2B11ECC76F70091B946 /* DTTrackManager.h in Headers */ = {isa = PBXBuildFile; fileRef = F747C2AF1ECC76F70091B946 /* DTTrackManager.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		F747C2B21ECC76F70091B946 /* DTTrackManager.m in Sources */ = {isa = PBXBuildFile; fileRef = F747C2B01ECC76F70091B946 /* DTTrackManager.m */; };
 		F7C4FD1B1ECC748900C3EBCC /* DTTracker.h in Headers */ = {isa = PBXBuildFile; fileRef = F7C4FD191ECC748900C3EBCC /* DTTracker.h */; settings = {ATTRIBUTES = (Public, ); }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		F747C2AF1ECC76F70091B946 /* DTTrackManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DTTrackManager.h; sourceTree = "<group>"; };
+		F747C2B01ECC76F70091B946 /* DTTrackManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DTTrackManager.m; sourceTree = "<group>"; };
 		F7C4FD161ECC748900C3EBCC /* DTTracker.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = DTTracker.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		F7C4FD191ECC748900C3EBCC /* DTTracker.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DTTracker.h; sourceTree = "<group>"; };
 		F7C4FD1A1ECC748900C3EBCC /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -48,6 +66,8 @@
 			children = (
 				F7C4FD191ECC748900C3EBCC /* DTTracker.h */,
 				F7C4FD1A1ECC748900C3EBCC /* Info.plist */,
+				F747C2AF1ECC76F70091B946 /* DTTrackManager.h */,
+				F747C2B01ECC76F70091B946 /* DTTrackManager.m */,
 			);
 			path = DTTracker;
 			sourceTree = "<group>";
@@ -60,6 +80,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				F7C4FD1B1ECC748900C3EBCC /* DTTracker.h in Headers */,
+				F747C2B11ECC76F70091B946 /* DTTrackManager.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -93,6 +114,11 @@
 				LastUpgradeCheck = 0830;
 				ORGANIZATIONNAME = organizer;
 				TargetAttributes = {
+					F747C2B31ECC78090091B946 = {
+						CreatedOnToolsVersion = 8.3.2;
+						DevelopmentTeam = 57D4T2G5AY;
+						ProvisioningStyle = Automatic;
+					};
 					F7C4FD151ECC748900C3EBCC = {
 						CreatedOnToolsVersion = 8.3.2;
 						DevelopmentTeam = 57D4T2G5AY;
@@ -113,6 +139,7 @@
 			projectRoot = "";
 			targets = (
 				F7C4FD151ECC748900C3EBCC /* DTTracker */,
+				F747C2B31ECC78090091B946 /* DTTrackerCombiner */,
 			);
 		};
 /* End PBXProject section */
@@ -127,17 +154,50 @@
 		};
 /* End PBXResourcesBuildPhase section */
 
+/* Begin PBXShellScriptBuildPhase section */
+		F747C2B71ECC78350091B946 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "set -e\n\nUNIVERSAL_OUTPUTFOLDER=${BUILD_DIR}/${CONFIGURATION}-universal\n\n\nmkdir -p \"${UNIVERSAL_OUTPUTFOLDER}\"\n\n\nxcodebuild -target \"${PROJECT_NAME}\" ONLY_ACTIVE_ARCH=NO -configuration ${CONFIGURATION} -sdk iphoneos  BUILD_DIR=\"${BUILD_DIR}\" BUILD_ROOT=\"${BUILD_ROOT}\" clean build\nxcodebuild -arch x86_64 -arch i386 -target \"${PROJECT_NAME}\" -configuration ${CONFIGURATION} -sdk iphonesimulator ONLY_ACTIVE_ARCH=NO BUILD_DIR=\"${BUILD_DIR}\" BUILD_ROOT=\"${BUILD_ROOT}\" clean build\n\n\ncp -R \"${BUILD_DIR}/${CONFIGURATION}-iphoneos/${PROJECT_NAME}.framework\" \"${UNIVERSAL_OUTPUTFOLDER}/\"\n\n\nlipo -create -output \"${UNIVERSAL_OUTPUTFOLDER}/${PROJECT_NAME}.framework/${PROJECT_NAME}\" \"${BUILD_DIR}/${CONFIGURATION}-iphonesimulator/${PROJECT_NAME}.framework/${PROJECT_NAME}\" \"${BUILD_DIR}/${CONFIGURATION}-iphoneos/${PROJECT_NAME}.framework/${PROJECT_NAME}\"\n\n\ncp -R \"${UNIVERSAL_OUTPUTFOLDER}/${PROJECT_NAME}.framework\" \"${PROJECT_DIR}\"\n\n\nopen \"${PROJECT_DIR}\"";
+		};
+/* End PBXShellScriptBuildPhase section */
+
 /* Begin PBXSourcesBuildPhase section */
 		F7C4FD111ECC748900C3EBCC /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F747C2B21ECC76F70091B946 /* DTTrackManager.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin XCBuildConfiguration section */
+		F747C2B51ECC78090091B946 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				DEVELOPMENT_TEAM = 57D4T2G5AY;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Debug;
+		};
+		F747C2B61ECC78090091B946 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				DEVELOPMENT_TEAM = 57D4T2G5AY;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Release;
+		};
 		F7C4FD1C1ECC748900C3EBCC /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -239,7 +299,13 @@
 		F7C4FD1F1ECC748900C3EBCC /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ARCHS = (
+					"$(ARCHS_STANDARD)",
+					armv7s,
+					"$(ARCHS_STANDARD)",
+				);
 				CODE_SIGN_IDENTITY = "";
+				DEAD_CODE_STRIPPING = NO;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = 57D4T2G5AY;
 				DYLIB_COMPATIBILITY_VERSION = 1;
@@ -248,6 +314,14 @@
 				INFOPLIST_FILE = DTTracker/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				LINK_WITH_STANDARD_LIBRARIES = NO;
+				MACH_O_TYPE = staticlib;
+				ONLY_ACTIVE_ARCH = NO;
+				OTHER_CFLAGS = "-fembed-bitcode";
+				OTHER_LDFLAGS = (
+					"-all_load",
+					"-ObjC",
+				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.cainiao.test20161124.DTTracker;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
@@ -257,7 +331,13 @@
 		F7C4FD201ECC748900C3EBCC /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ARCHS = (
+					"$(ARCHS_STANDARD)",
+					armv7s,
+					"$(ARCHS_STANDARD)",
+				);
 				CODE_SIGN_IDENTITY = "";
+				DEAD_CODE_STRIPPING = NO;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = 57D4T2G5AY;
 				DYLIB_COMPATIBILITY_VERSION = 1;
@@ -266,6 +346,13 @@
 				INFOPLIST_FILE = DTTracker/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				LINK_WITH_STANDARD_LIBRARIES = NO;
+				MACH_O_TYPE = staticlib;
+				OTHER_CFLAGS = "-fembed-bitcode";
+				OTHER_LDFLAGS = (
+					"-all_load",
+					"-ObjC",
+				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.cainiao.test20161124.DTTracker;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
@@ -275,6 +362,14 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		F747C2B41ECC78090091B946 /* Build configuration list for PBXAggregateTarget "DTTrackerCombiner" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				F747C2B51ECC78090091B946 /* Debug */,
+				F747C2B61ECC78090091B946 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
 		F7C4FD101ECC748900C3EBCC /* Build configuration list for PBXProject "DTTracker" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
@@ -291,6 +386,7 @@
 				F7C4FD201ECC748900C3EBCC /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
