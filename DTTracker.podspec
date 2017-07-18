@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name             = "DTTracker"
-  s.version          = "1.0.2"
+  s.version          = "1.0.3"
   s.summary          = "An user tracker used on iOS."
   s.description      = <<-DESC
                        It is an user tracker used on iOS, which implement by Objective-C.
